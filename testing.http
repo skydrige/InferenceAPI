@@ -1,0 +1,26 @@
+###
+POST http://0.0.0.0:8000/s
+
+### Send POST request with json body
+POST http://172.21.1.11:8000/api
+Content-Type: application/json
+
+{
+  "content": "is this working"
+}
+
+<> 2024-05-29T100842.500.html
+
+
+### Send POST request with body as parameters
+POST http://172.21.1.11:8000/api
+Content-Type: application/x-www-form-urlencoded
+
+#id = 999 &
+content = what is your name
+#fact = IntelliJ %+ HTTP Client %= <3
+
+<> 2024-05-29T102547.200.json
+<> 2024-05-29T102459.200.json
+<> 2024-05-29T101030.200.json
+

@@ -1,0 +1,2 @@
+# NOTE: The "installation" is just cloning the repo.
+!git clone https://github.com/google/gemma_pytorch.git

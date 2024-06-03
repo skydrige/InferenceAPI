@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form method="post" action="/login">
+    {% csrf_token %}
+    Username: 
+    <input type="text" name="username" value="{{ user.username }}" required>
+    Password: 
+    <input type="password" name="password" required>
+    <button type="submit">Submit</button>
+</form>
+
+{% if message is not None %}
+    <p>{{ message }}</p>
+{% endif %}
+
+
+{% if error is not None %}
+    <p style="color:red">{{ error }}</p>
+{% endif %}
+</body>
+</html>

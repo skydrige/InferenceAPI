@@ -13,7 +13,23 @@
     height: 80%;
     background-color: #1e1e1e;
 }
-
+.logout-container {
+    text-align: right;
+    padding: 10px;
+    background-color: #1e1e1e;
+}
+.logout-button {
+    background-color: #6200ea;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.logout-button:hover {
+    background-color: #3700b3;
+}
 
 img {
     width: 50px;
@@ -226,3 +242,55 @@ received-chats-img {
 }
 
 
+
+
+
+.msg-bottom {
+    border-top: 1px solid #ccc;
+    background-color: rgb(239, 239, 239);
+    position: sticky;
+    bottom: 0;
+    padding: 10px;
+}
+.input-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #2c2c2c;
+    border-radius: 20px;
+    padding: 5px 10px;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+.form-control {
+    flex: 1;
+    background-color: #2c2c2c;
+    border: none;
+    color: #ffffff;
+    padding: 10px;
+    border-radius: 20px;
+    margin-right: 10px;
+    min-width: 0;
+    overflow-wrap: break-word;
+}
+.input-group-text {
+    background-color: #6200ea;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.input-group-text:hover {
+    background-color: #3700b3;
+}
+input:focus {
+    outline: none;
+    border: none;
+    box-shadow: none;
+}
+.send-icon {
+    font-weight: bold;
+}

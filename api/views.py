@@ -1,16 +1,20 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from django.template import loader
-from django.contrib.auth.models import User
-from .inference.summary import Summarizer
-from .Preprocessor import Preprocessor
-from django.views.decorators.csrf import csrf_exempt, csrf_protect
+from datetime import datetime
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.db.utils import IntegrityError
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render, redirect
+from django.utils.datastructures import MultiValueDictKeyError
+from django.views.decorators.csrf import csrf_protect
 
-# from .models import *
+from .Preprocessor import Preprocessor
+from .inference.summary import Summarizer
 
-# summarizer = Summarizer()
+from .models import test_session
+
+summarizer = Summarizer()
 
 
 @csrf_protect
@@ -45,9 +49,33 @@ def direct_form(request):
     return render(request, 'contextForm.html')
 
 
-@login_required(login_url='login')
+@login_required(login_url='login_view')
 def chat(request):
-    return render(request, 'chat.html')
+    name = request.user.first_name
+    data = test_session.objects.filter(username=request.user)
+    return render(request, 'chat.html', {'username': name, 'data': data})
+
+
+@login_required(login_url='login_view')
+@csrf_protect
+def user_query(request):
+    username = request.user.username
+    query = request.POST.get('query')
+    previous = test_session.objects.filter(username=username)
+    # query = "How you was created?"
+    text = summarizer.reply(query, previous)
+    conversation = test_session()
+    message_id = test_session.objects.filter(username=username).order_by('-timestamp').first()
+    if message_id is not None:
+        conversation.message_id = username + "." + str(int(str(message_id).split(".")[-1])+1)
+    else:
+        conversation.message_id = username + '.' + '0'
+    conversation.username = username
+    conversation.user = query
+    conversation.model = Preprocessor().formater(text)
+    conversation.timestamp = datetime.now()
+    conversation.save()
+    return redirect(chat)
 
 
 @csrf_protect
@@ -57,13 +85,15 @@ def signup(request):
         user.first_name = request.POST['name']
         user.username = request.POST['username']
         user.email = request.POST['email']
-        user.password = request.POST['password']
+        user.set_password(request.POST['password'])
         user.save()
         return render(request, 'login.html', {'message': 'Account created!', 'user': user})
-    except:
-        return render(request, 'signup.html', {'error': 'Username already exists!', 'user': user})
-    finally:
-        return render(request, 'signup.html', {'user': user})
+    except IntegrityError:
+        return render(request, 'signup.html', {'error': 'User already existed!', 'user': user})
+    except MultiValueDictKeyError:
+        return render(request, 'signup.html')
+    except Exception as e:
+        return render(request, 'signup.html', {'error': e})
 
 
 # def serve_login(request):
@@ -75,8 +105,10 @@ def login_view(request):
     try:
         username = request.POST['username']
         password = request.POST['password']
-    except:
+    except MultiValueDictKeyError:
         return render(request, 'login.html')
+    except Exception as e:
+        return render(request, 'login.html', {'error': e})
     user = authenticate(request, username=username, password=password)
     if user is not None:
         login(request, user)
@@ -87,4 +119,4 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    render(request, 'login.html', {'message': 'You have been logged out!'})
+    return render(request, 'login.html', {'message': 'You have been logged out!'})

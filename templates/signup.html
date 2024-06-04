@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-
+<a href="/login">Login</a>
 <form method="post" action="/signup">
     {% csrf_token %}
     Name: 
@@ -26,6 +26,9 @@
 
 {% if error is not None %}
     <p style="color:red">{{ error }}</p>
+{% endif %}
+{% if debug is not None %}
+    <p style="color:red">Debug: {{ debug }}</p>
 {% endif %}
 </body>
 </html>

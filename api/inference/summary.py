@@ -1,5 +1,5 @@
 import os
-import kagglehub
+# import kagglehub
 import sys
 
 sys.path.append('gemma_pytorch')
@@ -19,8 +19,8 @@ class Summarizer:
         VARIANT = '2b-it'  # @param ['2b', '2b-it', '7b', '7b-it', '7b-quant', '7b-it-quant']
         MACHINE_TYPE = 'cuda'  # @param ['cuda', 'cpu']
         # Load model weights
-        weights_dir = kagglehub.model_download(f'google/gemma/pyTorch/{VARIANT}')
-
+        weights_dir = r'C:\Users\stude\.cache\kagglehub\models\google\gemma\pyTorch\2b-it\2' # kagglehub.model_download(f'google/gemma/pyTorch/{VARIANT}')
+        # print("weights dir", weights_dir)
         # Ensure that the tokenizer is present
         tokenizer_path = os.path.join(weights_dir, 'tokenizer.model')
         assert os.path.isfile(tokenizer_path), 'Tokenizer not found!'
@@ -65,6 +65,7 @@ class Summarizer:
             chat += self.MODEL_CHAT_TEMPLATE.format(prompt=i.model)
 
         chat += self.USER_CHAT_TEMPLATE.format(prompt=query) + '<start_of_turn>model\n'
+        # print(chat)
         return chat
 
     def reply(self, query, previous_chat):

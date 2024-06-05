@@ -1,5 +1,4 @@
-from datetime import datetime
-
+from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -7,7 +6,7 @@ from django.db.utils import IntegrityError
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.utils.datastructures import MultiValueDictKeyError
-from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
 
 from .Preprocessor import Preprocessor
 from .inference.summary import Summarizer
@@ -53,7 +52,10 @@ def direct_form(request):
 def chat(request):
     name = request.user.first_name
     data = test_session.objects.filter(username=request.user)
-    return render(request, 'chat.html', {'username': name, 'data': data})
+    processor = Preprocessor()
+    for i in data:
+        i.model = processor.formater(i.model)
+    return render(request, 'test.html', {'username': name, 'data': data})
 
 
 @login_required(login_url='login_view')
@@ -61,19 +63,20 @@ def chat(request):
 def user_query(request):
     username = request.user.username
     query = request.POST.get('query')
-    previous = test_session.objects.filter(username=username)
-    # query = "How you was created?"
+    if len(query) < 10:
+        return redirect(chat)
+    previous = test_session.objects.filter(username=username).order_by('-timestamp')[:4]
     text = summarizer.reply(query, previous)
     conversation = test_session()
     message_id = test_session.objects.filter(username=username).order_by('-timestamp').first()
     if message_id is not None:
-        conversation.message_id = username + "." + str(int(str(message_id).split(".")[-1])+1)
+        conversation.message_id = username + "." + str(int(str(message_id).split(".")[-1]) + 1)
     else:
         conversation.message_id = username + '.' + '0'
     conversation.username = username
     conversation.user = query
-    conversation.model = Preprocessor().formater(text)
-    conversation.timestamp = datetime.now()
+    conversation.model = text
+    conversation.timestamp = timezone.now()
     conversation.save()
     return redirect(chat)
 
@@ -120,3 +123,7 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return render(request, 'login.html', {'message': 'You have been logged out!'})
+
+
+def test_html(request):
+    return render(request, 'test.html')

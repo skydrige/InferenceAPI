@@ -6,6 +6,10 @@
     <meta charset="UTF-8">
     <title>Horizon</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/test.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+    <script>hljs.highlightAll();</script>
 </head>
 <body>
 <div class="logout-container">
@@ -99,21 +103,36 @@
   </div>
 </form>
 </div>
-<script>
-function copyToClipboard(text) {
-    navigator.clipboard.writeText(text).then(function() {
-        {#alert('Copied to clipboard');#}
-    }, function(err) {
-        console.error('Could not copy text: ', err);
-    });
-}
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                alert('Copied to clipboard');
+            }, function(err) {
+                console.error('Could not copy text: ', err);
+            });
+        }
 
-// Scroll to bottom when page loads or reloads
-document.addEventListener("DOMContentLoaded", function() {
-    var chatBoard = document.querySelector(".chat__conversation-board");
-    chatBoard.scrollTop = chatBoard.scrollHeight;
-});
-</script>
+        // Automatically scroll to the bottom of the chat conversation
+        window.onload = function() {
+            var chatBoard = document.querySelector('.chat__conversation-board');
+            chatBoard.scrollTop = chatBoard.scrollHeight;
+
+            // Initialize Clipboard.js
+            var clipboard = new ClipboardJS('.copy-button', {
+                target: function(trigger) {
+                    return trigger.previousElementSibling;
+                }
+            });
+
+            clipboard.on('success', function() {
+                alert('Copied to clipboard!');
+            });
+
+            clipboard.on('error', function(e) {
+                console.error('Could not copy text: ', e);
+            });
+        };
+    </script>
 <footer>
     Designed and developed by Horizon team
 </footer>

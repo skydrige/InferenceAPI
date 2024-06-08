@@ -335,3 +335,32 @@ footer {
     overflow-y: auto;
     padding-bottom: 60px; /* Add padding to accommodate the footer */
 }
+
+
+  /* Custom styles for code blocks */
+        .code-container {
+            position: relative;
+            background-color: #2d2d2d;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .code-container pre {
+            background: none;
+            padding: 0;
+            margin: 0;
+        }
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #555;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .copy-button:hover {
+            background-color: #333;
+        }

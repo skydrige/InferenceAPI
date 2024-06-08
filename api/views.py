@@ -1,16 +1,15 @@
-from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.utils import IntegrityError
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
+from django.utils import timezone
 from django.utils.datastructures import MultiValueDictKeyError
-from django.views.decorators.csrf import csrf_protect, csrf_exempt
+from django.views.decorators.csrf import csrf_protect
 
 from .Preprocessor import Preprocessor
 from .inference.summary import Summarizer
-
 from .models import test_session
 
 summarizer = Summarizer()

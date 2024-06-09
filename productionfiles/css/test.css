@@ -182,6 +182,7 @@ body {
   flex-direction: row;
   align-items: center;
   height: 100%;
+    overflow-y: hidden;
 }
 #chat .chat__conversation-panel__container .panel-item:not(:last-child) {
   margin: 0 1em 0 0;
@@ -242,6 +243,7 @@ body {
   border: 0;
   font-family: "Lato", sans-serif;
   resize: none;
+    overflow-y: hidden;
 }
 
 @media only screen and (max-width: 600px) {
@@ -321,10 +323,9 @@ body {
 /* Ensure footer visibility */
 footer {
     text-align: center;
-    padding: 10px;
-    background-color: #333;
-    color: white;
-    position: fixed;
+    padding: 0;
+    color: #888888;
+    position: absolute;
     bottom: 0;
     width: 100%;
 }
@@ -338,29 +339,39 @@ footer {
 
 
   /* Custom styles for code blocks */
-        .code-container {
-            position: relative;
-            background-color: #2d2d2d;
-            padding: 20px;
-            border-radius: 5px;
-            margin: 20px 0;
-        }
-        .code-container pre {
-            background: none;
-            padding: 0;
-            margin: 0;
-        }
-        .copy-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #555;
-            color: #fff;
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .copy-button:hover {
-            background-color: #333;
-        }
+.code-container {
+    position: relative;
+    background-color: #0d0d0d;
+    padding: 20px;
+    border-radius: 5px;
+    margin: 20px 0;
+}
+.code-container pre {
+    background: none;
+    padding: 0;
+    margin: 0;
+}
+.copy-button {
+    position: absolute;
+    top: -18px;
+    right: 0;
+    background-color: #0d0d0d;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.copy-button:hover {
+    background-color: #333;
+}
+.language-label {
+    position: absolute;
+    top: -18px;
+    left: 0;
+    background-color: #0d0d0d;
+    color: #fff;
+    padding: 2px 5px;
+    font-size: 12px;
+    border-radius: 3px;
+}

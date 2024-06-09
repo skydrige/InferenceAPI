@@ -4,13 +4,12 @@ from django.contrib.auth.models import User
 from django.db.utils import IntegrityError
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
-from django.utils import timezone
 from django.utils.datastructures import MultiValueDictKeyError
 from django.views.decorators.csrf import csrf_protect
 
 from .Preprocessor import Preprocessor
 from .inference.summary import Summarizer
-from .models import test_session
+from .models import Session, Messages
 
 summarizer = Summarizer()
 
@@ -50,7 +49,10 @@ def direct_form(request):
 @login_required(login_url='login_view')
 def chat(request):
     name = request.user.first_name
-    data = test_session.objects.filter(username=request.user)
+    session_id = request.session['session_id']
+    if session_id is None:
+        redirect(new_chat)
+    data = Messages.objects.filter(username=request.user, session=session_id)
     processor = Preprocessor()
     for i in data:
         i.model = processor.formater(i.model)
@@ -61,22 +63,39 @@ def chat(request):
 @csrf_protect
 def user_query(request):
     username = request.user.username
+    session_id = request.session['session_id']
     query = request.POST.get('query')
     if len(query) < 10:
         return redirect(chat)
-    previous = test_session.objects.filter(username=username).order_by('-timestamp')[:4]
+    message_db = Messages.objects.filter(username=username, session=session_id).order_by('-timestamp')
+    previous = message_db[:4]
     text = summarizer.reply(query, previous)
-    conversation = test_session()
-    message_id = test_session.objects.filter(username=username).order_by('-timestamp').first()
+    conversation = Messages()
+    conversation.session = session_id
+    message_id = message_db.first()
     if message_id is not None:
-        conversation.message_id = username + "." + str(int(str(message_id).split(".")[-1]) + 1)
+        conversation.message_id = session_id + ".message." + str(int(str(message_id).split(".")[-1]) + 1)
     else:
-        conversation.message_id = username + '.' + '0'
+        conversation.message_id = session_id + '.message.0'
     conversation.username = username
     conversation.user = query
     conversation.model = text
-    conversation.timestamp = timezone.now()
     conversation.save()
+    return redirect(chat)
+
+
+@login_required(login_url='login_view')
+def new_chat(request):
+    user = User.objects.get(username=request.user.username)
+    session = Session()
+    session.user = user
+    session_id = Session.objects.filter(user=user).order_by('-timestamp').first()
+    if session_id is not None:
+        session.session_id = user.username + "." + str(int(str(session_id).split(".")[-1]) + 1)
+    else:
+        session.session_id = user.username + 'session.0'
+    session.save()
+    request.session['session_id'] = session.session_id
     return redirect(chat)
 
 
@@ -96,10 +115,6 @@ def signup(request):
         return render(request, 'signup.html')
     except Exception as e:
         return render(request, 'signup.html', {'error': e})
-
-
-# def serve_login(request):
-#     render(request, template_name='login.html')
 
 
 @csrf_protect

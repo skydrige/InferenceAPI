@@ -6,7 +6,7 @@ sys.path.append('gemma_pytorch')
 # sys.path.insert(0, 'C:/Users/stude/PycharmProjects/pythonProject')
 from api.inference.gemma_pytorch.gemma.gemma.config import get_config_for_7b, get_config_for_2b
 from .gemma_pytorch.gemma.model import GemmaForCausalLM
-import torch
+# import torch
 
 
 # from api.models import test_session

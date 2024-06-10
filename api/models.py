@@ -13,15 +13,15 @@ from django.contrib.auth.models import User
 #         return User(self.name, self.username, self.email)
 
 
-class Session(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+class Chat_Session(models.Model):
+    username = models.CharField(max_length=30)
     session_id = models.CharField(max_length=100, primary_key=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
 
-class Messages(models.Model):
-    session = models.ForeignKey(Session, on_delete=models.CASCADE)
-    users = models.ForeignKey(User, on_delete=models.CASCADE)
+class Chat_Messages(models.Model):
+    session = models.CharField(max_length=100)
+    username = models.CharField(max_length=30)
     message_id = models.CharField(max_length=50, primary_key=True)
     user = models.CharField(max_length=5000)
     model = models.CharField(max_length=5000)

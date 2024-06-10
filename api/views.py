@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -8,10 +10,11 @@ from django.utils.datastructures import MultiValueDictKeyError
 from django.views.decorators.csrf import csrf_protect
 
 from .Preprocessor import Preprocessor
-from .inference.summary import Summarizer
-from .models import Session, Messages
+# from .inference.summary import Summarizer
+from .models import Chat_Session, Chat_Messages
+from hashlib import sha256
 
-summarizer = Summarizer()
+summarizer = None  # Summarizer()
 
 
 @csrf_protect
@@ -49,10 +52,13 @@ def direct_form(request):
 @login_required(login_url='login_view')
 def chat(request):
     name = request.user.first_name
-    session_id = request.session['session_id']
+    try:
+        session_id = request.session['session_id']
+    except Exception as e:
+        return redirect(new_chat)
     if session_id is None:
         redirect(new_chat)
-    data = Messages.objects.filter(username=request.user, session=session_id)
+    data = Chat_Messages.objects.filter(username=request.user, session=session_id)
     processor = Preprocessor()
     for i in data:
         i.model = processor.formater(i.model)
@@ -67,16 +73,12 @@ def user_query(request):
     query = request.POST.get('query')
     if len(query) < 10:
         return redirect(chat)
-    message_db = Messages.objects.filter(username=username, session=session_id).order_by('-timestamp')
+    message_db = Chat_Messages.objects.filter(username=username, session=session_id).order_by('-timestamp')
     previous = message_db[:4]
-    text = summarizer.reply(query, previous)
-    conversation = Messages()
+    text = "response from the model!"  # summarizer.reply(query, previous)
+    conversation = Chat_Messages()
     conversation.session = session_id
-    message_id = message_db.first()
-    if message_id is not None:
-        conversation.message_id = session_id + ".message." + str(int(str(message_id).split(".")[-1]) + 1)
-    else:
-        conversation.message_id = session_id + '.message.0'
+    conversation.message_id = sha256((str(session_id) + str(datetime.now())).encode()).hexdigest()[:32]
     conversation.username = username
     conversation.user = query
     conversation.model = text
@@ -86,14 +88,9 @@ def user_query(request):
 
 @login_required(login_url='login_view')
 def new_chat(request):
-    user = User.objects.get(username=request.user.username)
-    session = Session()
-    session.user = user
-    session_id = Session.objects.filter(user=user).order_by('-timestamp').first()
-    if session_id is not None:
-        session.session_id = user.username + "." + str(int(str(session_id).split(".")[-1]) + 1)
-    else:
-        session.session_id = user.username + 'session.0'
+    session = Chat_Session()
+    session.username = request.user.username
+    session.session_id = sha256(str(session.username + str(datetime.now())).encode()).hexdigest()[:32]
     session.save()
     request.session['session_id'] = session.session_id
     return redirect(chat)

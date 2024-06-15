@@ -14,4 +14,5 @@ urlpatterns = [
     path('query', views.user_query, name='user_query'),
     path('new', views.new_chat, name='new_chat'),
     path('testing', views.test_html, name='test_html'),
+    path('change/<str:session_id>', views.change_session, name='change_session'),
 ]

@@ -15,6 +15,21 @@
 <div class="logout-container">
         <a href="{% url 'logout_view' %}" class="logout-button">Logout</a>
 </div>
+<div class="main">
+<div class="history-container">
+<h2>History</h2>
+<a href="{% url 'new_chat' %}"><h3 class="new_chat">New Chat</h3></a>
+    <table>
+        {% for title in titles %}
+            <a href="change/{{ title.session_id }}">
+            <div class="history">
+                    <span>{{ title.title }}</span>
+            </div>
+            </a>
+        {% endfor %}
+    </table>
+</div>
+
 <div class="--dark-theme" id="chat">
   <div class="chat__conversation-board">
       {% for obj in data %}
@@ -103,6 +118,7 @@
     </div>
   </div>
 </form>
+</div>
 </div>
     <script>
         function copyToClipboard(text) {

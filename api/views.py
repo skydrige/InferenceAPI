@@ -11,12 +11,12 @@ from django.utils.datastructures import MultiValueDictKeyError
 from django.views.decorators.csrf import csrf_protect
 
 from .Preprocessor import Preprocessor
-from .inference.summary import Summarizer
+# from .inference.summary import Summarizer
 from .models import Chat_Session, Chat_Messages
 from hashlib import sha256
 from asgiref.sync import sync_to_async, async_to_sync
 
-summarizer = Summarizer()  # done
+summarizer = None  # Summarizer()
 
 
 @csrf_protect
@@ -69,6 +69,8 @@ async def session_title(sessions):
             title['title'] = messages[0].user[:35] + '...'
             title['session_id'] = session.session_id
             titles.append(title)
+        else:
+            await Chat_Session(session_id=session.session_id).adelete()
     # print(titles)
     return titles
 

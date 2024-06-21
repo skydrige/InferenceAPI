@@ -16,7 +16,7 @@ from .models import Chat_Session, Chat_Messages
 from hashlib import sha256
 from asgiref.sync import sync_to_async, async_to_sync
 
-# summarizer = Summarizer()
+summarizer = Summarizer()
 
 
 async def home(request):
@@ -48,8 +48,6 @@ async def session_title(sessions):
             title['title'] = messages[0].user[:35] + '...'
             title['session_id'] = session.session_id
             titles.append(title)
-        else:
-            await Chat_Session(session_id=session.session_id).adelete()
     # print(titles)
     return titles
 
@@ -102,8 +100,8 @@ async def user_query(request):
     )
     message_db = await sync_to_async(message_db.order_by)('-timestamp')
     previous = await sync_to_async(list)(message_db[:4])
-    text = "response from the model!"
-    # text = await sync_to_async(summarizer.reply)(query, previous)
+    # text = "response from the model!"
+    text = await sync_to_async(summarizer.reply)(query, previous)
     conversation = Chat_Messages()
     conversation.session = session_id
     conversation.message_id = sha256((str(session_id) + str(datetime.now())).encode()).hexdigest()[:32]

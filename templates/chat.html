@@ -3,10 +3,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-{#    <meta http-equiv="refresh" content="1">#}
     <meta charset="UTF-8">
     <title>Horizon</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/chat.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+    <script>hljs.highlightAll();</script>
 </head>
 <body>
 <div class="logout-container">
@@ -31,7 +34,6 @@
 
 <div class="--dark-theme" id="chat">
   <div class="chat__conversation-board">
-
       {% for obj in data %}
       {#    sender#}
     <div class="chat__conversation-board__message-container reversed">
@@ -88,7 +90,7 @@
       </div>
     </div>
     {% endfor %}
-
+  </div>
 <form action="{% url 'user_query' %}" method="post">
     {% csrf_token %}
   <div class="chat__conversation-panel">

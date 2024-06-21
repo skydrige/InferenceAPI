@@ -11,12 +11,12 @@ from django.utils.datastructures import MultiValueDictKeyError
 from django.views.decorators.csrf import csrf_protect
 
 from .Preprocessor import Preprocessor
-# from .inference.summary import Summarizer
+from .inference.summary import Summarizer
 from .models import Chat_Session, Chat_Messages
 from hashlib import sha256
 from asgiref.sync import sync_to_async, async_to_sync
 
-summarizer = None  # Summarizer()
+summarizer = Summarizer()
 
 
 @csrf_protect
@@ -173,7 +173,7 @@ async def login_view(request):
     user = await aauthenticate(request, username=username, password=password)
     if user is not None:
         await alogin(request, user)
-        return await redirect(chat)
+        return await aredirect(chat)
     else:
         return await arender(request, 'login.html',
                              {'error': 'Invalid username or password!', 'details': user})

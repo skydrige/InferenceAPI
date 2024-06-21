@@ -1,27 +1,56 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
 </head>
 <body>
-<a href="/login">Login</a>
-<form method="post" action="/signup">
-    {% csrf_token %}
-    Name: 
-    <input type="text" name="name" value="{{ user.first_name }}" required>
-    Username: 
-    <input type="text" name="username" value="{{ user.username }}" required>
-    Email: 
-    <input type="email" name="email" value="{{ user.email }}" required>
-    Password: 
-    <input type="password" name="password" required>
-    <button type="submit">Submit</button>
-</form>
-
-{% if message is not None %}
+<a href="{% url 'login_view' %}" class="log-btn">Login</a>
+{#<form method="post" action="{% url 'signup' %}">#}
+{#    {% csrf_token %}#}
+{#    Name: #}
+{#    <input type="text" name="name" value="{{ user.first_name }}" required>#}
+{#    Username: #}
+{#    <input type="text" name="username" value="{{ user.username }}" required>#}
+{#    Email: #}
+{#    <input type="email" name="email" value="{{ user.email }}" required>#}
+{#    Password: #}
+{#    <input type="password" name="password" required>#}
+{#    <button type="submit">Submit</button>#}
+{#</form>#}
+<div class="flex-container">
+  <div class="content-container">
+    <div class="form-container">
+      <form method="post" action="{% url 'signup' %}">
+          {% csrf_token %}
+        <h1>
+          Sign Up
+        </h1>
+        <br>
+        <br>
+          <span class="subtitle">NAME:</span>
+        <br>
+        <input type="text" name="name" value="{{ user.first_name }}" required>
+          <br>
+        <span class="subtitle">USERNAME:</span>
+        <br>
+        <input type="text" name="username" value="{{ user.username }}" required>
+        <br>
+          <span class="subtitle">EMAIL:</span>
+        <br>
+        <input type="email" name="email" value="{{ user.email }}" required>
+          <br>
+        <span class="subtitle">PASSWORD:</span>
+        <br>
+        <input type="password" name="password" required>
+        <br><br>
+        <input type="submit" value="SUBMIT" class="submit-btn">
+      </form>
+        {% if message is not None %}
     <p>{{ message }}</p>
-{% endif %}
+    {% endif %}
 
 
 {% if error is not None %}
@@ -30,5 +59,20 @@
 {% if debug is not None %}
     <p style="color:red">Debug: {{ debug }}</p>
 {% endif %}
+    </div>
+  </div>
+</div>
+{#{% if message is not None %}#}
+{#    <p>{{ message }}</p>#}
+{#{% endif %}#}
+{##}
+{##}
+{#{% if error is not None %}#}
+{#    <p style="color:red">{{ error }}</p>#}
+{#{% endif %}#}
+{#{% if debug is not None %}#}
+{#    <p style="color:red">Debug: {{ debug }}</p>#}
+{#{% endif %}#}
 </body>
 </html>
+

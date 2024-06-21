@@ -16,47 +16,26 @@ from .models import Chat_Session, Chat_Messages
 from hashlib import sha256
 from asgiref.sync import sync_to_async, async_to_sync
 
-summarizer = Summarizer()
+# summarizer = Summarizer()
 
 
-@csrf_protect
-async def index(request):
-    processor = Preprocessor()
-    content = processor.clean(request.POST['content'])
-    print(content)
-    if len(content) <= 10 or len(content) >= 20000:
-        return JsonResponse({"summary": "Can't summarize this!"})
-    text = summarizer.summarize(content)
-    return JsonResponse({"summary": processor.formater(text)})
-
-
-async def test(request):
-    text = await sync_to_async(summarizer.summarize)(summarizer.text)
-    return await sync_to_async(HttpResponse)(Preprocessor().formater(text))
-
-
-async def arender(request, template, context=None):
-    return await sync_to_async(render)(request, template, context)
-
-
-async def aredirect(func):
-    return await sync_to_async(redirect)(func)
+async def home(request):
+    return await arender(request, 'home.html')
 
 
 @csrf_protect
 async def direct_summary(request):
-    processor = Preprocessor()
-    content = await sync_to_async(processor.clean)(request.POST['content'])
+    try:
+        processor = Preprocessor()
+        content = await sync_to_async(processor.clean)(request.POST['content'])
+    except MultiValueDictKeyError:
+        return await arender(request, 'summary.html')
     if len(content) <= 10 or len(content) >= 20000:
-        return await arender(request, 'contextForm.html',
+        return await arender(request, 'summary.html',
                              {'userInput': content, 'summary': "Can't summarize this!"})
 
     text = await sync_to_async(summarizer.summarize)(content)
-    return await arender(request, 'contextForm.html', {'userInput': content, 'summary': processor.formater(text)})
-
-
-async def direct_form(request):
-    return await arender(request, 'contextForm.html')
+    return await arender(request, 'summary.html', {'userInput': content, 'summary': processor.formater(text)})
 
 
 async def session_title(sessions):
@@ -102,7 +81,10 @@ async def chat(request):
         return message
 
     data = await asyncio.gather(*(format_message(i) for i in data))
-    return await arender(request, 'test.html', {'username': name, 'data': data, 'titles': titles})
+    if len(data)==0:
+        prompts=True
+    else:prompts=False
+    return await arender(request, 'chat.html', {'username': name, 'data': data, 'titles': titles, 'prompts': prompts})
 
 
 @sync_to_async
@@ -120,7 +102,8 @@ async def user_query(request):
     )
     message_db = await sync_to_async(message_db.order_by)('-timestamp')
     previous = await sync_to_async(list)(message_db[:4])
-    text = "response from the model!"  # await sync_to_async(summarizer.reply)(query, previous)
+    text = "response from the model!"
+    # text = await sync_to_async(summarizer.reply)(query, previous)
     conversation = Chat_Messages()
     conversation.session = session_id
     conversation.message_id = sha256((str(session_id) + str(datetime.now())).encode()).hexdigest()[:32]
@@ -182,6 +165,30 @@ async def login_view(request):
 async def logout_view(request):
     await alogout(request)
     return await arender(request, 'login.html', {'message': 'You have been logged out!'})
+
+
+@csrf_protect
+async def index(request):
+    processor = Preprocessor()
+    content = processor.clean(request.POST['content'])
+    print(content)
+    if len(content) <= 10 or len(content) >= 20000:
+        return JsonResponse({"summary": "Can't summarize this!"})
+    text = summarizer.summarize(content)
+    return JsonResponse({"summary": processor.formater(text)})
+
+
+async def test(request):
+    text = await sync_to_async(summarizer.summarize)(summarizer.text)
+    return await sync_to_async(HttpResponse)(Preprocessor().formater(text))
+
+
+async def arender(request, template, context=None):
+    return await sync_to_async(render)(request, template, context)
+
+
+async def aredirect(func):
+    return await sync_to_async(redirect)(func)
 
 
 async def test_html(request):

@@ -62,7 +62,7 @@ h1 {
   align-items: center;
 
   width: 500px;
-  height: 350px;
+  height: fit-content;
 
   margin-top: 5px;
   padding-top: 20px;
@@ -143,3 +143,31 @@ input {
 
   box-shadow: none;
 }
+
+.header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+    background-color: #1e1e1e;
+    border-bottom: 1px solid #333;
+}
+.header .btn {
+    background-color: #1e90ff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+}
+.header .btn:hover {
+    background-color: #005cbf;
+}
+
+.footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #888;
+        }

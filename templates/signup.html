@@ -7,19 +7,13 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
 </head>
 <body>
-<a href="{% url 'login_view' %}" class="log-btn">Login</a>
-{#<form method="post" action="{% url 'signup' %}">#}
-{#    {% csrf_token %}#}
-{#    Name: #}
-{#    <input type="text" name="name" value="{{ user.first_name }}" required>#}
-{#    Username: #}
-{#    <input type="text" name="username" value="{{ user.username }}" required>#}
-{#    Email: #}
-{#    <input type="email" name="email" value="{{ user.email }}" required>#}
-{#    Password: #}
-{#    <input type="password" name="password" required>#}
-{#    <button type="submit">Submit</button>#}
-{#</form>#}
+<div class="header">
+        <a href="{% url 'chat' %}" class="btn">Chat</a>
+        <a href="{% url 'directSummary' %}" class="btn">Summary</a>
+        <a href="{% url 'login_view' %}" class="btn">Login</a>
+        <a href="https://github.com/saikiranreddyappidi/InferenceAPI" class="btn">GitHub</a>
+</div>
+
 <div class="flex-container">
   <div class="content-container">
     <div class="form-container">
@@ -49,30 +43,21 @@
         <input type="submit" value="SUBMIT" class="submit-btn">
       </form>
         {% if message is not None %}
-    <p>{{ message }}</p>
-    {% endif %}
-
-
-{% if error is not None %}
-    <p style="color:red">{{ error }}</p>
-{% endif %}
-{% if debug is not None %}
-    <p style="color:red">Debug: {{ debug }}</p>
-{% endif %}
+            <p>{{ message }}</p>
+        {% endif %}
+        {% if error is not None %}
+            <p style="color:red">{{ error }}</p>
+        {% endif %}
+        {% if debug is not None %}
+            <p style="color:red">Debug: {{ debug }}</p>
+        {% endif %}
     </div>
   </div>
 </div>
-{#{% if message is not None %}#}
-{#    <p>{{ message }}</p>#}
-{#{% endif %}#}
-{##}
-{##}
-{#{% if error is not None %}#}
-{#    <p style="color:red">{{ error }}</p>#}
-{#{% endif %}#}
-{#{% if debug is not None %}#}
-{#    <p style="color:red">Debug: {{ debug }}</p>#}
-{#{% endif %}#}
+
 </body>
+<div class="footer">
+        <p>Designed and developed by Horizon Team</p>
+</div>
 </html>
 

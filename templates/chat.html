@@ -1,90 +1,142 @@
 {% load static %}
+
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Chat Box UI Design</title>
+<html lang="en">
+<head>
+{#    <meta http-equiv="refresh" content="1">#}
+    <meta charset="UTF-8">
+    <title>Horizon</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/chat.css' %}">
-
-    <!-- Import this CDN to use icons -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"
-    />
-  </head>
-
-  <body>
-    <div class="logout-container">
+</head>
+<body>
+<div class="logout-container">
+    <a href="{% url 'directSummary' %}" class="logout-button">Summary</a>
+    <a href="https://github.com/saikiranreddyappidi/InferenceAPI" class="logout-button">Github</a>
         <a href="{% url 'logout_view' %}" class="logout-button">Logout</a>
-    </div>
-    <!-- Main container -->
-    <div class="container">
-      <!-- msg-header section starts -->
-      <div class="msg-header">
-        <div class="container1">
-          <img src="{% static 'images/human.jpg' %}" class="msgimg" />
-          <div class="active">
-            <p>{{ username }}</p>
-          </div>
-        </div>
-      </div>
-      <!-- msg-header section ends -->
-      <!-- Chat inbox  -->
-      <div class="chat-page">
-        <div class="msg-inbox">
-          <div class="chats">
-            <!-- Message container -->
-            <div class="msg-page">
-              {% for obj in data %}
-                     <!-- Outgoing messages -->
-              <div class="outgoing-chats">
-                <div class="outgoing-chats-img">
-                  <img src="{% static 'images/human.jpg' %}" />
-                </div>
-                <div class="outgoing-msg">
-                  <div class="outgoing-chats-msg">
-                    <p class="multi-msg">
-                      {{ obj.user }}
-                    </p>
-                    <span class="time">{{ obj.timestamp }}</span>
-                  </div>
-                </div>
-              </div>
-              <!-- Incoming messages -->
-              <div class="received-chats">
-                <div class="received-chats-img">
-                  <img src="{% static 'images/robo.png' %}" />
-                </div>
-                <div class="received-msg">
-                  <div class="received-msg-inbox">
-                    <p>
-                        {{ obj.model | safe}}
-                    </p>
-                    <span class="time">{{ obj.timestamp }}</span>
-                  </div>
-                </div>
-              </div>
-                  
-              {% endfor %}
+</div>
+<div class="main">
+<div class="history-container">
+<h2>History</h2>
+<a href="{% url 'new_chat' %}"><h3 class="new_chat">New Chat</h3></a>
+    <table>
+        {% for title in titles %}
+            <a href="change/{{ title.session_id }}">
+            <div class="history">
+                    <span>{{ title.title }}</span>
             </div>
-          </div>
+            </a>
+        {% endfor %}
+    </table>
+</div>
 
-          <!-- msg-bottom section -->
-          <div class="msg-bottom">
-              <form action="{% url 'user_query' %}" method="post" class="input-group">
-                {% csrf_token %}
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Write message..."
-                  name="query"
-                />
-                <button type="submit" class="input-group-text send-icon">
-                  <i class="bi bi-send"></i>
-                </button>
-              </form>
-          </div>
-        </div>
+<div class="--dark-theme" id="chat">
+  <div class="chat__conversation-board">
+
+      {% for obj in data %}
+      {#    sender#}
+    <div class="chat__conversation-board__message-container reversed">
+      <div class="chat__conversation-board__message__person">
+        <div class="chat__conversation-board__message__person__avatar"><img src="{% static 'images/human.jpg' %}" alt="Dennis Mikle"/></div><span class="chat__conversation-board__message__person__nickname">Dennis Mikle</span>
+      </div>
+      <div class="chat__conversation-board__message__context">
+        <div class="chat__conversation-board__message__bubble"> <span>{{ obj.user }}</span></div>
+          <span class="time">{{ obj.timestamp }}</span>
+      </div>
+      <div class="chat__conversation-board__message__options">
+        <button class="btn-icon chat__conversation-board__message__option-button option-item emoji-button">
+          <svg class="feather feather-smile sc-dnqmqq jxshSx" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+          </svg>
+        </button>
+        <button class="btn-icon chat__conversation-board__message__option-button option-item more-button">
+          <svg class="feather feather-more-horizontal sc-dnqmqq jxshSx" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="1"></circle>
+            <circle cx="19" cy="12" r="1"></circle>
+            <circle cx="5" cy="12" r="1"></circle>
+          </svg>
+        </button>
       </div>
     </div>
-  </body>
+{#      receiver gemma #}
+    <div class="chat__conversation-board__message-container">
+      <div class="chat__conversation-board__message__person">
+        <div class="chat__conversation-board__message__person__avatar"><img src="{% static 'images/robo.png' %}" alt="robo"/></div><span class="chat__conversation-board__message__person__nickname">Gemma</span>
+      </div>
+      <div class="chat__conversation-board__message__context">
+        <div class="chat__conversation-board__message__bubble"> <span>{{ obj.model | safe }}</span></div>
+          <span class="time">{{ obj.timestamp }}</span>
+      </div>
+      <div class="chat__conversation-board__message__options">
+        <button class="btn-icon chat__conversation-board__message__option-button option-item emoji-button">
+          <svg class="feather feather-smile sc-dnqmqq jxshSx" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+          </svg>
+        </button>
+        <button class="btn-icon chat__conversation-board__message__option-button option-item more-button">
+          <svg class="feather feather-more-horizontal sc-dnqmqq jxshSx" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="1"></circle>
+            <circle cx="19" cy="12" r="1"></circle>
+            <circle cx="5" cy="12" r="1"></circle>
+          </svg>
+        </button>
+      </div>
+    </div>
+    {% endfor %}
+
+<form action="{% url 'user_query' %}" method="post">
+    {% csrf_token %}
+  <div class="chat__conversation-panel">
+    <div class="chat__conversation-panel__container">
+          <input name="query" class="chat__conversation-panel__input panel-item" placeholder="Type a message..." required></input>
+          <button class="chat__conversation-panel__button panel-item btn-icon send-message-button" type="submit">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-reactid="1036">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+    </div>
+  </div>
+</form>
+</div>
+</div>
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                alert('Copied to clipboard');
+            }, function(err) {
+                console.error('Could not copy text: ', err);
+            });
+        }
+
+        // Automatically scroll to the bottom of the chat conversation
+        window.onload = function() {
+            var chatBoard = document.querySelector('.chat__conversation-board');
+            chatBoard.scrollTop = chatBoard.scrollHeight;
+
+            // Initialize Clipboard.js
+            var clipboard = new ClipboardJS('.copy-button', {
+                target: function(trigger) {
+                    return trigger.previousElementSibling;
+                }
+            });
+
+            clipboard.on('success', function() {
+                {#alert('Copied to clipboard!');#}
+            });
+
+            clipboard.on('error', function(e) {
+                console.error('Could not copy text: ', e);
+            });
+        };
+    </script>
+</body>
+<footer>
+    Designed and developed by Horizon team
+</footer>
 </html>

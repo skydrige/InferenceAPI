@@ -5,10 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Horizon</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/summary.css' %}">
 </head>
 <body>
-<a href="{% url 'chat' %}" class="summary">Chat</a>
+    <div class="header">
+        <a href="{% url 'chat' %}" class="btn">Chat</a>
+        <a href="{% url 'login_view' %}" class="btn">Login</a>
+        <a href="{% url 'signup' %}" class="btn">Signup</a>
+        <a href="https://github.com/saikiranreddyappidi/InferenceAPI" class="btn">GitHub</a>
+    </div>
 <div class="container">
     <form action="/summary" method="post">
     {% csrf_token %}

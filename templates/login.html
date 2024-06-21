@@ -7,7 +7,12 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
 </head>
 <body>
-<a href="{% url 'signup' %}" class="log-btn">Sign Up</a>
+<div class="header">
+        <a href="{% url 'chat' %}" class="btn">Chat</a>
+        <a href="{% url 'directSummary' %}" class="btn">Summary</a>
+        <a href="{% url 'signup' %}" class="btn">Signup</a>
+        <a href="https://github.com/saikiranreddyappidi/InferenceAPI" class="btn">GitHub</a>
+</div>
 <div class="flex-container">
   <div class="content-container">
     <div class="form-container">
@@ -28,17 +33,17 @@
         <br><br>
         <input type="submit" value="SUBMIT" class="submit-btn">
       </form>
+        {% if message is not None %}
+            <p style="color: white">{{ message }}</p>
+        {% endif %}
+        {% if error is not None %}
+            <p style="color:red">{{ error }}</p>
+        {% endif %}
     </div>
   </div>
 </div>
-
-{% if message is not None %}
-    <p>{{ message }}</p>
-{% endif %}
-
-
-{% if error is not None %}
-    <p style="color:red">{{ error }}</p>
-{% endif %}
+<div class="footer">
+        <p>Designed and developed by Horizon Team</p>
+</div>
 </body>
 </html>

@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">  <!-- Link to your existing CSS -->
+</head>
+<body>
+    <div class="header">
+        <a href="{% url 'login_view' %}" class="btn">Login</a>
+        <a href="{% url 'signup' %}" class="btn">Signup</a>
+        <a href="https://github.com/saikiranreddyappidi/InferenceAPI" class="btn">GitHub</a>
+    </div>
+    <div class="container">
+        <div class="box">
+            <h2>Summary Model</h2>
+            <p>Get a summary of your content.</p>
+            <a href="{% url 'directSummary' %}">Go to Summary</a>
+        </div>
+        <div class="box">
+            <h2>Conversation Model</h2>
+            <p>Engage in a conversation.</p>
+            <a href="{% url 'chat' %}">Go to Conversation</a>
+        </div>
+    </div>
+    <div class="footer">
+        <p>Designed and developed by Horizon Team</p>
+    </div>
+</body>
+</html>

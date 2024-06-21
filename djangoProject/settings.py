@@ -137,3 +137,53 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',  # Change this to 'ERROR' if you want fewer logs
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+        'error_console': {
+            'level': 'ERROR',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'error_console'],
+            'level': 'INFO',  # Adjust to 'ERROR' for fewer logs
+            'propagate': True,
+        },
+        'daphne': {
+            'handlers': ['console', 'error_console'],
+            'level': 'INFO',  # Adjust to 'ERROR' for fewer logs
+            'propagate': True,
+        },
+        'daphne.error': {
+            'handlers': ['error_console'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'daphne.access': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}

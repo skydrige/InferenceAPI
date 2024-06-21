@@ -290,7 +290,7 @@ body {
 .history-container {
     /*text-align: right;*/
     /*padding: 10px;*/
-    background-color: #54575c;
+    background-color: #343536;
     /*position: absolute;*/
     /*top: 10px;*/
     /*left: 20px;*/
@@ -440,4 +440,33 @@ footer {
     margin: 5px;
     cursor: pointer;
     text-align: center;
+}
+
+
+
+.container {
+    margin-top: 20%;
+    display:ruby-text;
+    justify-content:space-around;
+    align-items:end;
+    flex-grow: 1;
+    gap: 20px;
+}
+.box {
+    margin: 4%;
+    background-color: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    width: 250px;
+    height: fit-content;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s;
+}
+.box:hover {
+    transform: scale(1.05);
+}
+.box p {
+    font-size: 18px;
 }

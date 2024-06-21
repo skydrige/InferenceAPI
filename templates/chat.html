@@ -90,8 +90,25 @@
       </div>
     </div>
     {% endfor %}
+    {% if prompts is True %}
+       <div class="container">
+            <div class="box">
+                <p>Write a Python function that reverses a string.</p>
+            </div>
+            <div class="box">
+                <p>Implement a binary search algorithm in Java.</p>
+            </div>
+            <div class="box">
+                <p>Explain the concept of gradient descent in machine learning.</p>
+            </div>
+            <div class="box">
+                <p>Suggest some sci-fi books I might enjoy.</p>
+            </div>
+        </div>
+    {% endif %}
+  
   </div>
-<form action="{% url 'user_query' %}" method="post">
+<form action="{% url 'user_query' %}" method="post" id="queryForm">
     {% csrf_token %}
   <div class="chat__conversation-panel">
     <div class="chat__conversation-panel__container">
@@ -118,12 +135,12 @@
 
         // Automatically scroll to the bottom of the chat conversation
         window.onload = function() {
-            var chatBoard = document.querySelector('.chat__conversation-board');
+            const chatBoard = document.querySelector('.chat__conversation-board');
             chatBoard.scrollTop = chatBoard.scrollHeight;
 
             // Initialize Clipboard.js
-            var clipboard = new ClipboardJS('.copy-button', {
-                target: function(trigger) {
+            const clipboard = new ClipboardJS('.copy-button', {
+                target: function (trigger) {
                     return trigger.previousElementSibling;
                 }
             });
@@ -136,6 +153,20 @@
                 console.error('Could not copy text: ', e);
             });
         };
+        
+         document.addEventListener('DOMContentLoaded', () => {
+            const boxes = document.querySelectorAll('.box');
+            const inputField = document.querySelector('.chat__conversation-panel__input');
+            const form = document.getElementById('queryForm');
+
+            boxes.forEach(box => {
+                box.addEventListener('click', () => {
+                    inputField.value = box.querySelector('p').innerText;
+                    form.submit();
+                });
+            });
+        });
+        
     </script>
 </body>
 <footer>

@@ -48,7 +48,6 @@ async def session_title(sessions):
             title['title'] = messages[0].user[:35] + '...'
             title['session_id'] = session.session_id
             titles.append(title)
-    # print(titles)
     return titles
 
 

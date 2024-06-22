@@ -25,10 +25,9 @@ SECRET_KEY = 'django-insecure-lq1_1-8v_izpt@5m1-$b-7vte6ay&h0p_+whyy(a$k9!)3^3yn
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '172.21.1.11', 'horizon.saikiranappidi.tech', '3b11-47-247-121-12.ngrok-free.app']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '172.21.1.11', 'horizon.saikiranappidi.tech']
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://3b11-47-247-121-12.ngrok-free.app',
     'https://horizon.saikiranappidi.tech'
 ]
 
@@ -115,7 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 

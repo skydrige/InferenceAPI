@@ -1,5 +1,4 @@
 import os
-# import kagglehub
 import sys
 
 sys.path.append('gemma_pytorch')
@@ -7,6 +6,7 @@ sys.path.append('gemma_pytorch')
 from api.inference.gemma_pytorch.gemma.gemma.config import get_config_for_7b, get_config_for_2b
 from .gemma_pytorch.gemma.model import GemmaForCausalLM
 import torch
+import platform
 
 
 # from api.models import test_session
@@ -18,9 +18,7 @@ class Summarizer:
     def __init__(self):
         VARIANT = '2b-it'  # @param ['2b', '2b-it', '7b', '7b-it', '7b-quant', '7b-it-quant']
         MACHINE_TYPE = 'cuda'  # @param ['cuda', 'cpu']
-        # Load model weights
-        weights_dir = r'C:\Users\stude\.cache\kagglehub\models\google\gemma\pyTorch\2b-it\2'  # kagglehub.model_download(f'google/gemma/pyTorch/{VARIANT}')
-        # print("weights dir", weights_dir)
+        weights_dir = 'model_weights/models/google/gemma/pyTorch/2b-it/2'  # kagglehub.model_download(f'google/gemma/pyTorch/{VARIANT}')
         # Ensure that the tokenizer is present
         tokenizer_path = os.path.join(weights_dir, 'tokenizer.model')
         assert os.path.isfile(tokenizer_path), 'Tokenizer not found!'

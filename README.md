@@ -18,7 +18,7 @@ Horizon is a web application that provides a chatbot interface and a large text 
 
 ## Technologies Used
 - **Python Django**: Web framework for building the application.
-- **ASGI**: Asynchronous Server Gateway Interface for handling asynchronous requests.
+- **ASGI Daphne**: Asynchronous Server Gateway Interface for handling asynchronous requests.
 - **Gemma 2b-it Model**: A 2 billion parameter model by Google for natural language processing.
 - **PyTorch**: Deep learning framework used with CUDA for model inference.
 - **Docker**: Containerization platform for easy deployment.
@@ -47,10 +47,11 @@ Horizon is a web application that provides a chatbot interface and a large text 
 - **Main URL**: [Horizon Website](https://horizon.saikiranappidi.tech)
 - **Docker Hub Container**: [Docker Hub](https://hub.docker.com/r/saikiranappidi/inference)
 - **Gemma Model**: [Gemma by Google](https://ai.google.dev/gemma)
-- **GitHub Repository**: [InferenceAPI Repository](https://github.com/saikiranreddyappidi/InferenceAPI)
+- **GitHub Repository**: [InferenceAPI Repository](https://github.com/SpokenEagle/InferenceAPI)
 - **CUDA Downloads**: [CUDA Download Link](https://developer.nvidia.com/cuda-downloads)
 - **Django**: [Django Website](https://www.djangoproject.com)
 - **Testing UI**: [UI Testing Link](https://horizon.skydrige.tech)
+- **UI Repository**: [UI Testing Link](https://github.com/SpokenEagle/chat-UI)
 
 ## Contributing
 We are actively developing and experimenting with various technologies and open-source LLMs. Contributions are welcome! If you are interested in contributing to the project, please fork the repository and submit a pull request with your proposed changes.

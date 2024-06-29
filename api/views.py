@@ -98,7 +98,7 @@ async def user_query(request):
         username=username, session=session_id
     )
     message_db = await sync_to_async(message_db.order_by)('-timestamp')
-    previous = await sync_to_async(list)(message_db[:4])
+    previous = await sync_to_async(list)(message_db[:8])
     # text = "response from the model!"
     text = await sync_to_async(summarizer.reply)(query, previous)
     conversation = Chat_Messages()

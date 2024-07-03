@@ -56,5 +56,3 @@ Horizon is a web application that provides a chatbot interface and a large text 
 ## Contributing
 We are actively developing and experimenting with various technologies and open-source LLMs. Contributions are welcome! If you are interested in contributing to the project, please fork the repository and submit a pull request with your proposed changes.
 
-## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
